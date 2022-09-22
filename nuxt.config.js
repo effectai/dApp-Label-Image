@@ -1,9 +1,9 @@
 export default {
 
   publicRuntimeConfig: {
-    // proxyContract: 'efxdavid1bot',
-    // eosEnv: 'testnet',
-    // campaignID: 34
+    // proxyContract: 'efxtaskproxy',
+    // eosEnv: 'mainnet',
+    // campaignID: 41
   },
 
   privateRuntimeConfig: {

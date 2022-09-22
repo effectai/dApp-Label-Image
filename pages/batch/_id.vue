@@ -121,7 +121,7 @@ import * as effectsdk from '@effectai/effect-js'
 export default {
   data () {
     return {
-      env: 'mainnet',
+      env: 'testnet',
       loading: true,
       effectsdk: null,
       id: parseInt(this.$route.params.id),

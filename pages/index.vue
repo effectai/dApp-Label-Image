@@ -25,12 +25,9 @@
               <br>
 
               <p>
-                Other resources that will be invaluable to you:
                 <ul>
                   <li><a href="https://effect.network" target="_blank" rel="noopener noreferrer">Effect Network</a></li>
                   <li><a href="https://github.com/effectai" target="_blank" rel="noopener noreferrer">Effect Network Github</a></li>
-                  <li><a href="https://developer.effect.network" target="_blank" rel="noopener noreferrer">Developer Effect Network</a></li>
-                  <li><a href="https://effectai.github.io/effect-js/" target="_blank" rel="noopener noreferrer">Effect-JS Reference</a></li>
                   <li><a href="https://app.effect.network" target="_blank" rel="noopener noreferrer">Effect Force Mainnet</a></li>
                   <li><a href="https://testnet.effect.network" target="_blank" rel="noopener noreferrer">Effect Force Testnet</a></li>
                   <li><a href="https://dicord.gg/effectnetwork" target="_blank" rel="noopener noreferrer">Join our Discord</a></li>

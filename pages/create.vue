@@ -52,28 +52,25 @@
                 </button>
               </div>
             </div>
-            <div class="box is-centered">
-              <div v-if="campaign && campaign.info" class=" is-6 py-0 px-2 batch-info">
-                <div class="box">
-                  <span>
-                    Amount:
-                  </span>
-                  <span>
-                    <strong>{{ repetitions }}</strong>
-                  </span>
-                  <input
-                    v-model="repetitions"
-                    class="slider is-fullwidth is-info"
-                    step="1"
-                    min="1"
-                    max="20"
-                    type="range"
-                  >
-                  Total Cost
-                  <strong>{{ parseFloat(campaign.info.reward * batch.length * repetitions).toFixed(4) }} EFX</strong>
-                </div>
+            <div v-if="campaign && campaign.info" class="box mx-auto is-centered is-6 py-3 px-2 batch-info">
+              <div class="mx-auto mx-6">
+                <span>
+                  Amount:
+                </span>
+                <span>
+                  <strong>{{ repetitions }}</strong>
+                </span>
+                <input
+                  v-model="repetitions"
+                  class="slider is-fullwidth is-info"
+                  step="1"
+                  min="1"
+                  max="20"
+                  type="range"
+                >
+                Total Cost
+                <strong>{{ parseFloat(campaign.info.reward * batch.length * repetitions).toFixed(4) }} EFX</strong>
               </div>
-              <!-- </div> -->
             </div>
           </div>
 
@@ -186,7 +183,7 @@
               <strong>Success!</strong><br>
               Your order has been successfuly posted to
               <a v-if="env === 'mainnet'" :href="`https://app.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
-              <a v-else :href="`https://app.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
+              <a v-else :href="`https://testnet.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
               <br>
             </p><hr>
             <div class="buttons is-centered">
@@ -218,9 +215,9 @@ export default {
   name: 'Create',
   data () {
     return {
-      campaignId: 27, // USE OWN CAMPAIGN ID HERE
+      campaignId: 41, // USE OWN CAMPAIGN ID HERE
       env: 'mainnet',
-      proxy: null, // optional use proxy
+      proxy: 'efxtaskproxy', // optional use proxy
       loading: false,
       batch: [],
       repetitions: 1,
@@ -286,7 +283,7 @@ export default {
      */
     async getCampaign () {
       try {
-        this.effectsdk = new effectsdk.EffectClient(this.env)
+        this.effectsdk = new effectsdk.EffectClient('mainnet')
         this.campaign = await this.effectsdk.force.getCampaign(this.campaignId)
         if (this.campaign) {
           this.campaign.placeholders = this.getPlaceholders(this.campaign.info.template)
@@ -380,7 +377,7 @@ export default {
     generateClient () {
       console.log('Creating SDK...')
       try {
-        this.client = new effectsdk.EffectClient(this.env)
+        this.client = new effectsdk.EffectClient('mainnet')
         console.log(this.client)
       } catch (error) {
         console.error(error)
@@ -391,6 +388,7 @@ export default {
     * EOS Anchor Wallet
     */
     async connectAnchor () {
+      console.log(this.client.config)
       try {
         const transport = new AnchorLinkBrowserTransport()
         const alink = new AnchorLink({
@@ -403,7 +401,7 @@ export default {
           ]
         })
         // Perform the login, which returns the users identity
-        const identity = await alink.login('hackathon-boilerplate')
+        const identity = await alink.login('Effect-Network-Image-Labeling')
         const { session } = identity
         const signatureProvider = session.makeSignatureProvider()
         const account = { accountName: session.auth.actor.toString(), permission: session.auth.permission.toString() }
