@@ -2,7 +2,7 @@
   "name": "Effect-Network-dApp",
   "short_name": "Effect-Network-dApp",
   "icons": [],
-  "start_url": "/gh-pages/?standalone=true",
+  "start_url": "/dApp-Label-Image/?standalone=true",
   "display": "standalone",
   "background_color": "#ffffff",
   "lang": "en"
