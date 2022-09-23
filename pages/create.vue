@@ -187,9 +187,9 @@
               <br>
             </p><hr>
             <div class="buttons is-centered">
-              <a :href="'/batch/' + createdBatchId" class="mx-6 px-6 button is-centered " target="" rel="noopener noreferrer">
+              <nuxt-link :to="`${/batch/} + createdBatchId`" class="mx-6 px-6 button is-centered " target="" rel="noopener noreferrer">
                 Go to results
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </div>
