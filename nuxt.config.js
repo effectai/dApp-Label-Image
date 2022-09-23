@@ -16,7 +16,7 @@ export default {
   target: 'static',
 
   router: {
-    base: '/gh-pages/'
+    base: '/dApp-Label-Image/'
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
