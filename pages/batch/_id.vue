@@ -162,7 +162,6 @@
 
 <script>
 import * as effectsdk from '@effectai/effect-js'
-// import { isNil } from 'ramda'
 export default {
   // props: ['campaign'],
   data () {
