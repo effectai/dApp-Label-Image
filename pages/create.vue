@@ -5,61 +5,63 @@
         <!-- Create your batch of tasks -->
         <div v-if="step === 1" id="step-1">
           <h2 class="title">
-            Add tasks
+            Add Images
           </h2>
           <div class="field">
             <div class="box">
               <div style="background: #fff; border-radius: 8px" class="p-2">
-                <table v-if="campaign && campaign.placeholders" class="table mx-auto">
-                  <thead>
-                    <tr>
-                      <th v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
-                        {{ placeholder }}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(task, index) in batch" :key="task.id">
-                      <td v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
-                        <span>{{ batch[index] }}</span>
-                      </td>
-                      <td>
-                        <button class="button is-danger is-outlined is-small is-rounded" @click.prevent="batch.splice(index, 1)">
-                          X
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td v-for="(placeholder, placeindex) in campaign.placeholders" :key="placeholder" class="task-placeholder-value">
-                        <input
-                          :ref="`placeholder-${placeindex}`"
-                          v-model="newTask[placeholder]"
-                          type="url"
-                          pattern="https?://.+"
-                          class="input is-info task-placeholder-value"
-                          :placeholder="placeholder"
-                          required
-                          @keydown.enter.prevent="createTask"
-                        >
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div class="table-container">
+                  <table v-if="campaign && campaign.placeholders" class="table mx-auto">
+                    <thead>
+                      <tr>
+                        <th v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
+                          {{ placeholder }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(task, index) in batch" :key="task.id">
+                        <td v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
+                          <a :href="batch[index].image_url" target="_blank" rel="noopener noreferrer">
+                            {{ batch[index].image_url }}
+                          </a>
+                        </td>
+                        <td>
+                          <button class="button is-danger is-outlined is-small is-rounded" @click.prevent="batch.splice(index, 1)">
+                            X
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td v-for="(placeholder, placeindex) in campaign.placeholders" :key="placeholder" class="task-placeholder-value">
+                          <input
+                            :ref="`placeholder-${placeindex}`"
+                            v-model="newTask[placeholder]"
+                            type="url"
+                            pattern="https?://.+"
+                            class="input is-info task-placeholder-value"
+                            placeholder="https://effect.network/img/logo/logo.png"
+                            required
+                            @keydown.enter.prevent="createTask"
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <div class="control has-text-centered mt-5">
-                <button class="button is-primary is-wide" @click.prevent="createTask">
+                <button
+                  class="button is-primary is-wide"
+                  :class="{'is-loading': loading}"
+                  @click.prevent="createTask"
+                >
                   Add Task
                 </button>
               </div>
             </div>
-            <div v-if="campaign && campaign.info" class="box mx-auto is-centered is-6 py-3 px-2 batch-info">
-              <div class="mx-auto mx-6">
-                <span>
-                  Amount:
-                </span>
-                <span>
-                  <strong>{{ repetitions }}</strong>
-                </span>
+            <div v-if="campaign && campaign.info" class="box has-text-centered">
+              <div class="mx-auto">
                 <input
                   v-model="repetitions"
                   class="slider is-fullwidth is-info"
@@ -68,7 +70,16 @@
                   max="20"
                   type="range"
                 >
-                Total Cost
+              </div>
+              <div>
+                <span>
+                  Amount:
+                </span>
+                <span>
+                  <strong>{{ repetitions }}</strong>
+                </span>
+                <br>
+                Total Cost:
                 <strong>{{ parseFloat(campaign.info.reward * batch.length * repetitions).toFixed(4) }} EFX</strong>
               </div>
             </div>
@@ -144,13 +155,13 @@
           </div>
 
           <div v-if="!accountConnected" id="connect-buttons" class="buttons px-6">
-            <button id="btn-login" class="button is-large is-fullwidth is-light  px-6 mx-6" @click="login()">
+            <button id="btn-login" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-light  px-6 mx-6" @click="login()">
               <span class="icon">
                 <img src="@/assets/images/providers/BSC-logo.svg" alt="" srcset="">
               </span>
               <span>Connect with BSC</span>
             </button>
-            <button id="btn-login-eos" class="button is-large is-fullwidth is-light  px-6 mx-6" @click="loginEOS()">
+            <button id="btn-login-eos" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-light  px-6 mx-6" @click="loginEOS()">
               <span class="icon">
                 <img src="@/assets/images/providers/EOS-logo.svg" alt="" srcset="">
               </span>
@@ -187,7 +198,7 @@
               <br>
             </p><hr>
             <div class="buttons is-centered">
-              <nuxt-link :to="`${/batch/} + createdBatchId`" class="mx-6 px-6 button is-centered " target="" rel="noopener noreferrer">
+              <nuxt-link :to="`/batch/${createdBatchId}`" class="mx-6 px-6 button is-centered " target="" rel="noopener noreferrer">
                 Go to results
               </nuxt-link>
             </div>
@@ -282,6 +293,7 @@ export default {
      * First initialize the SDK and then retrieve the campaigns
      */
     async getCampaign () {
+      this.loading = true
       try {
         this.effectsdk = new effectsdk.EffectClient('mainnet')
         this.campaign = await this.effectsdk.force.getCampaign(this.campaignId)
@@ -293,6 +305,7 @@ export default {
         this.setErrorMessage(error)
         console.error(error)
       }
+      this.loading = false
     },
 
     getPlaceholders (template) {
@@ -313,13 +326,17 @@ export default {
      * Push new task in to the tasks array and create a prepare a new task.
      */
     createTask () {
+      if (this.newTask.image_url.length === 0) {
+        this.setErrorMessage('Please add a valid image url. ex: https://example.com/image.jpg')
+        return
+      }
       this.batch.push(this.newTask)
       // Reset the newTask object
       this.newTask.id = this.tempCounter++
       this.newTask = this.getEmptyTask()
-      this.$nextTick(() => {
-        this.$refs['placeholder-0'][0].focus()
-      })
+      // this.$nextTick(() => {
+      //   this.$refs['placeholder-0'][0].focus()
+      // })
     },
     getEmptyTask () {
       const emptyTask = {}
@@ -335,9 +352,9 @@ export default {
         this.loading = true
 
         const content = {
-          tasks: this.batch.map(el => ({ place_holder: el.place_holder }))
+          tasks: this.batch.map(el => ({ image_url: el.image_url }))
         }
-        await console.log('uploading batch', content)
+        console.log('uploading batch', content)
         const result = await this.client.force
           .createBatch(this.campaign.id, content, Number(this.repetitions), this.proxy ? this.proxy : null)
         console.log('tx result', result)
@@ -361,6 +378,7 @@ export default {
       }
     },
     async loginEOS () {
+      this.loading = true
       try {
         this.generateClient()
         await this.connectAnchor()
@@ -369,12 +387,14 @@ export default {
         console.error(error)
         this.setErrorMessage(error)
       }
+      this.loading = false
     },
     /**
     * SDK Client
     * Create a new Effect SDK client.
     */
     generateClient () {
+      this.loading = true
       console.log('Creating SDK...')
       try {
         this.client = new effectsdk.EffectClient('mainnet')
@@ -383,11 +403,13 @@ export default {
         console.error(error)
         this.setErrorMessage(error)
       }
+      this.loading = false
     },
     /**
     * EOS Anchor Wallet
     */
     async connectAnchor () {
+      this.loading = true
       console.log(this.client.config)
       try {
         const transport = new AnchorLinkBrowserTransport()
@@ -413,6 +435,7 @@ export default {
         this.setErrorMessage(error)
         console.error(error)
       }
+      this.loading = false
     },
     /**
     * Metamask
@@ -424,6 +447,7 @@ export default {
     * Bsc-Testnet: 0x61 (hex), 97 (decimal)
     */
     async connectMetamask () {
+      this.loading = true
       console.log('Connecting to metamask wallet.')
       // @ts-ignore
       if (window.ethereum) {
@@ -447,11 +471,13 @@ export default {
       } else {
         this.setErrorMessage('Metamask not installed')
       }
+      this.loading = false
     },
     /**
     * Connect to Effect Account using burnerwallet, metamask or anchor
     */
     async connectEffectAccount () {
+      this.loading = true
       console.log('Connecting to account with wallet.')
       try {
         if (this.connectAccount.provider) {
@@ -467,6 +493,7 @@ export default {
         this.setErrorMessage('Login failed, try again')
         console.error(error)
       }
+      this.loading = false
     }
   }
 }
