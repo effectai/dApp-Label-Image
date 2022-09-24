@@ -58,44 +58,40 @@
                       </tfoot>
                     </table>
                   </div>
-                  <hr>
-
-                  <p class="subtitle">
-                    Tasks
-                  </p>
-                  <table class="table is-narrow">
-                    <thead />
-                    <tbody>
-                      <tr v-for="task in batchIpfs.tasks" :key="task.link_id">
-                        <td>{{ task.tweet_id }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <!-- <div id="tweet"></div> -->
 
                   <hr>
 
                   <p class="subtitle">
                     Results ({{ batch.tasks_done }}/{{ batch.num_tasks * batch.repetitions }})
                   </p>
-                  <div v-if="results && results.length > 0">
-                    <table class="table" style="width: 100%">
+                  <div v-if="submissions && submissions.length > 0" class="table-container">
+                    <table class="table">
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>Result</th>
                           <th>Submitted on</th>
+                          <th>Result</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr
-                          v-for="r in results"
-                          :key="r.id"
+                          v-for="(res, idx) in submissions"
+                          :key="res.id"
                         >
-                          <td>{{ r.id }}</td>
-                          <td>{{ r.data }}</td>
-                          <td>{{ r.submitted_on }}</td>
+                          <td>
+                            <a :href="batchIpfs.tasks[idx]?.image_url" target="_blank" rel="noopener noreferrer">
+                              {{ res.id }}
+                            </a>
+                          </td>
+                          <td>{{ res.submitted_on }}</td>
+                          <td>
+                            <button
+                              class="button"
+                              @click.prevent="viewResult(res.data)"
+                            >
+                              View Result
+                            </button>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -112,25 +108,78 @@
           </div>
         </div>
       </div>
+
+      <div class="modal" :class="{'is-active': resultModal}">
+        <div class="modal-background" @click.prevent="resultModal = false">
+          <div class="modal-card p-6">
+            <header class="modal-card-head">
+              <p class="modal-card-title">
+                Image Label Results
+              </p>
+              <button class="delete" aria-label="close" @click.prevent="resultModal = false" />
+            </header>
+            <section class="modal-card-body">
+              <div class="modal-content mx-auto has-text-centered" style="max-width: 80%;">
+                <img v-if="imageModal === null || imageModal === undefined" class="mx-auto" src="~assets/images/loading.svg">
+                <img v-else class="mx-auto" :src="imageModal" alt="" srcset="">
+              </div>
+              <hr>
+              <div v-if="dataModal === null || dataModal === undefined">
+                Loading...
+              </div>
+              <div v-else>
+                <div class="table-container">
+                  <table class="table mx-auto">
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th>Label</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="r in dataModal" :key="r.id">
+                        <td>
+                          <img :src="r.croppedCanvas" style="width: 100px" />
+                        </td>
+                        <td>{{ r.label }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <footer class="modal-card-foot">
+              <!-- <button class="button is-success">Save changes</button> -->
+              <!-- <button class="button" @click.prevent="resultModal = false">Close</button> -->
+            </footer>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import * as effectsdk from '@effectai/effect-js'
+// import { isNil } from 'ramda'
 export default {
+  // props: ['campaign'],
   data () {
     return {
-      env: 'testnet',
+      env: 'mainnet',
       loading: true,
       effectsdk: null,
       id: parseInt(this.$route.params.id),
       tasks: null,
-      results: null,
+      submissions: null,
       timer: null,
       batch: null,
       batchIpfs: null,
-      campaign: null
+      campaign: null,
+      resultModal: false,
+      dataModal: null,
+      imageModal: 'https://effect.network/img/logo/effect-force.png'
     }
   },
   computed: {
@@ -155,25 +204,36 @@ export default {
   methods: {
     async getBatch () {
       this.loading = true
-      this.batch = await this.effectsdk.force.getBatchById(this.id)
-      this.batchIpfs = await this.effectsdk.force.getIpfsContent(this.batch.content.field_1)
-      this.campaign = await this.effectsdk.force.getCampaign(this.batch.campaign_id)
+      console.log('getBatch', this.id)
+      this.batch = await this.effectsdk.force.getBatchById(this.id).catch(console.error)
+      console.log('batch', this.batch)
+      this.batchIpfs = await this.effectsdk.force.getIpfsContent(this.batch.content.field_1).catch(console.error)
+      console.log('batchIpfs', this.batchIpfs)
+      this.campaign = await this.effectsdk.force.getCampaign(this.batch.campaign_id).catch(console.error)
+      console.log('campaign', this.campaign)
       this.loading = false
       console.log('getBatch', this.batch, this.batchIpfs, this.campaign)
     },
     async getResults () {
-      console.log('getting results...')
+      console.log('Retrieving results.')
       let oldResultsLength = 0
-      if (this.results) {
-        oldResultsLength = this.results.length
+      if (this.submissions) {
+        oldResultsLength = this.submissions.length
       }
-      this.results = await this.effectsdk.force.getSubmissionsOfBatch(this.id)
-      console.log('results', this.results)
+      this.submissions = await this.effectsdk.force.getSubmissionsOfBatch(this.id)
+      console.log('results', this.submissions)
       // check if results changed
-      if (this.results.length !== oldResultsLength) {
-        console.log('results changed')
+      if (this.submissions.length !== oldResultsLength) {
+        console.log('Retrieving new results.')
         this.getBatch()
       }
+    },
+    async viewResult (data) {
+      this.resultModal = true
+      const dataJson = JSON.parse(data)
+      const ipfsData = await this.effectsdk.force.getIpfsContent(dataJson?.hash)
+      this.dataModal = ipfsData?.data
+      this.imageModal = ipfsData?.image_url
     }
   }
 }
