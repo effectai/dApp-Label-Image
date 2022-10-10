@@ -76,7 +76,9 @@
               </div>
             </div>
             <div v-if="campaign && campaign.info" class="box has-text-centered">
-              <p>Amount of workers per image:</p>
+              <p>Amount of workers per image:
+                  <strong>{{ repetitions }}</strong>
+              </p>
               <div class="mx-auto">
                 <input
                   v-model="repetitions"
@@ -95,14 +97,8 @@
                     <tr />
                   </table>
                 </table>
-                <span>
-                  Amount of workers per image:
-                </span>
-                <span>
-                  <strong>{{ repetitions }}</strong>
-                </span>
-                <br>
-                Total Cost:
+                <hr>
+                Subtotal:
                 <strong>{{ parseFloat(campaign.info.reward * batch.length * repetitions).toFixed(4) }} EFX</strong>
               </div>
             </div>
