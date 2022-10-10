@@ -20,22 +20,21 @@
                         <th>
                           Images
                         </th>
+                        <th>URL</th>
+                        <th>Min. Labels</th>
                         <th />
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(task, index) in batch" :key="task.id">
+                        <th v-for="placeholder in campaign.placeholders" :key="placeholder">
+                          <img :src="batch[index].image_url" alt="" srcset="" style="object-fit: contain; height: 100px;">
+                        </th>
                         <td v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
                           <div>
-                            <span>
-                              <img :src="batch[index].image_url" alt="" class="icon is-medium" style="object-fit: contain;">
-                            </span>
-                            &nbsp;
-                            <span>
-                              <a :href="batch[index].image_url" target="_blank" rel="noopener noreferrer" style="word-break: normal;">
-                                {{ batch[index].image_url }}
-                              </a>
-                            </span>
+                            <a :href="batch[index].image_url" target="_blank" rel="noopener noreferrer" style="word-break: normal;">
+                              {{ batch[index].image_url }}
+                            </a>
                           </div>
                         </td>
                         <td>
@@ -45,6 +44,7 @@
                         </td>
                       </tr>
                       <tr>
+                        <th></th>
                         <td v-for="(placeholder, placeindex) in campaign.placeholders" :key="placeholder" class="task-placeholder-value">
                           <input
                             :ref="`placeholder-${placeindex}`"
@@ -62,7 +62,7 @@
                   </table>
                 </div>
               </div>
-              <div class="control has-text-centered mt-5">
+              <div class="control has-text-centered m-5">
                 <button
                   class="button is-primary is-fullwidth mx-auto"
                   :class="{'is-loading': loading}"
@@ -76,10 +76,11 @@
               </div>
             </div>
             <div v-if="campaign && campaign.info" class="box has-text-centered">
+              <p>Amount of workers per image:</p>
               <div class="mx-auto">
                 <input
                   v-model="repetitions"
-                  class="slider is-fullwidth is-large is-info"
+                  class="slider is-fullwidth is-large is-primary"
                   step="1"
                   min="1"
                   max="20"
@@ -87,6 +88,13 @@
                 >
               </div>
               <div>
+                <table class="table">
+                  <thead />
+                  <tfoot />
+                  <table>
+                    <tr />
+                  </table>
+                </table>
                 <span>
                   Amount of workers per image:
                 </span>
