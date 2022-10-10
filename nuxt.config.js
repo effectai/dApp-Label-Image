@@ -52,6 +52,7 @@ export default {
   ],
 
   css: [
+    './assets/scss/global.scss',
     '@fortawesome/fontawesome-svg-core/styles.css'
   ],
 

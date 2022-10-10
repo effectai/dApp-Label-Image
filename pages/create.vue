@@ -14,17 +14,29 @@
                   <table v-if="campaign && campaign.placeholders" class="table mx-auto">
                     <thead>
                       <tr>
-                        <th v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
+                        <!-- <th v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
                           {{ placeholder }}
+                        </th> -->
+                        <th>
+                          Images
                         </th>
+                        <th />
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(task, index) in batch" :key="task.id">
                         <td v-for="placeholder in campaign.placeholders" :key="placeholder" class="task-placeholder-value has-text-left">
-                          <a :href="batch[index].image_url" target="_blank" rel="noopener noreferrer">
-                            {{ batch[index].image_url }}
-                          </a>
+                          <div>
+                            <span>
+                              <img :src="batch[index].image_url" alt="" class="icon is-medium" style="object-fit: contain;">
+                            </span>
+                            &nbsp;
+                            <span>
+                              <a :href="batch[index].image_url" target="_blank" rel="noopener noreferrer" style="word-break: normal;">
+                                {{ batch[index].image_url }}
+                              </a>
+                            </span>
+                          </div>
                         </td>
                         <td>
                           <button class="button is-danger is-outlined is-small is-rounded" @click.prevent="batch.splice(index, 1)">
@@ -39,7 +51,7 @@
                             v-model="newTask[placeholder]"
                             type="url"
                             pattern="https?://.+"
-                            class="input is-info task-placeholder-value"
+                            class="input is-info task-placeholder-value mx-auto"
                             placeholder="https://effect.network/img/logo/logo.png"
                             required
                             @keydown.enter.prevent="createTask"
@@ -52,11 +64,14 @@
               </div>
               <div class="control has-text-centered mt-5">
                 <button
-                  class="button is-primary is-wide"
+                  class="button is-primary is-fullwidth mx-auto"
                   :class="{'is-loading': loading}"
                   @click.prevent="createTask"
                 >
-                  Add Task
+                  <span>Add</span>
+                  &nbsp;
+                  <span><font-awesome-icon icon="fa-solid fa-plus" /></span>
+                  <!-- <span><font-awesome-icon icon="fa-solid fa-square-plus" /></span> -->
                 </button>
               </div>
             </div>
@@ -64,7 +79,7 @@
               <div class="mx-auto">
                 <input
                   v-model="repetitions"
-                  class="slider is-fullwidth is-info"
+                  class="slider is-fullwidth is-large is-info"
                   step="1"
                   min="1"
                   max="20"
@@ -73,7 +88,7 @@
               </div>
               <div>
                 <span>
-                  Amount:
+                  Amount of workers per image:
                 </span>
                 <span>
                   <strong>{{ repetitions }}</strong>
@@ -88,7 +103,7 @@
           <form>
             <div class="field is-grouped is-justify-content-center mt-6">
               <div class="control">
-                <button type="submit" :class="{'is-loading': loading}" class="button button is-primary is-wide mr-4" :disabled="!batch.length" @click="nextStep">
+                <button type="submit" :class="{'is-loading': loading}" class="button is-primary is-large is-fullwidth mr-4" :disabled="!batch.length" @click="nextStep">
                   Next step
                 </button>
               </div>
