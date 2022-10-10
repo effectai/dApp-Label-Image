@@ -46,31 +46,13 @@
         </figure>
         <br>
         <p class="title">
-          Effect Network NFT Labeler
+          NFT Research
         </p>
-        <p class="subtitle">
-          Use the Effect Network Work-Force in order to add labels to your NFT's.
-        </p>
-        <div class="buttons is-centered">
-          <nuxt-link to="/create" class="button is-primary is-light is-large">
-            <span>
-              Start
-            </span>
-            <span class="icon is-large">
-              <font-awesome-icon icon="fa-solid fa-play" />
-            </span>
-          </nuxt-link>
-          <nuxt-link to="/orders" class="button is-primary is-light is-large">
-            <span>
-              Orders
-            </span>
-            <span class="icon is-large">
-              <font-awesome-icon icon="fa-solid fa-list" />
-            </span>
-          </nuxt-link>
-        </div>
         <hr>
         <section class="section">
+          <p class="subtitle">
+            Use the Effect Network Work-Force in order to add labels to your NFT's.
+          </p>
           <div class="columns">
             <div class="column box m-2 p-2">
               <div class="mt-3">
@@ -108,6 +90,30 @@
                 Download your labeled NFT's
               </p>
             </div>
+          </div>
+        </section>
+        <hr>
+        <section class="section">
+          <p class="subtitle">
+            Get started now!
+          </p>
+          <div class="buttons is-centered">
+            <nuxt-link to="/create" class="button is-fullwidth is-primary is-light is-large mx-6">
+              <span>
+                Start
+              </span>
+              <span class="icon is-large">
+                <font-awesome-icon icon="fa-solid fa-play" />
+              </span>
+            </nuxt-link>
+            <nuxt-link to="/orders" class="button is-fullwidth is-primary is-light is-large mx-6">
+              <span>
+                Orders
+              </span>
+              <span class="icon is-large">
+                <font-awesome-icon icon="fa-solid fa-list" />
+              </span>
+            </nuxt-link>
           </div>
         </section>
       </div>
