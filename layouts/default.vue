@@ -4,12 +4,12 @@
       <header class="navbar">
         <div class="container">
           <div class="navbar-brand">
-            <a class="navbar-item">
+            <nuxt-link to="/" class="navbar-item">
               <span>
                 <img src="https://effect.network/img/logo/logo_icon.png" alt="logo" srcset="">
               </span>
               <span>Effect Network</span>
-            </a>
+            </nuxt-link>
             <span class="navbar-burger" data-target="navbarMenuHeroC">
               <span />
               <span />

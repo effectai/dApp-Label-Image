@@ -103,7 +103,7 @@
                 <font-awesome-icon icon="fa-solid fa-play" />
               </span>
             </nuxt-link>
-            <nuxt-link to="/orders" class="button is-fullwidth is-primary is-light is-large mx-6">
+            <nuxt-link to="/batch" class="button is-fullwidth is-primary is-light is-large mx-6">
               <span>
                 Orders
               </span>

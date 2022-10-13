@@ -138,7 +138,7 @@
           <form>
             <div class="field is-grouped is-justify-content-center mt-6">
               <div class="control">
-                <button type="submit" :class="{'is-loading': loading}" class="button is-primary is-large is-fullwidth mr-4" :disabled="!batch.length" @click="nextStep">
+                <button type="submit" :class="{'is-loading': loading}" class="button is-link is-large is-fullwidth mr-4" :disabled="!batch.length" @click="nextStep">
                   Next step
                 </button>
               </div>
@@ -147,7 +147,7 @@
         </div>
 
         <!-- Tasks overview & wallet login -->
-        <div v-if="step === 2">
+        <div v-if="step === 2" class="p-1 m-1">
           <h2 v-if="!accountConnected" class="title">
             Connect your wallet
           </h2>
@@ -164,7 +164,7 @@
             </figure>
 
             <div class="media-content">
-              <div class="content">
+              <div class="content p-3">
                 <p class="subtitle">
                   Connected
                 </p>
@@ -201,6 +201,7 @@
                   </tfoot>
                 </table>
               </div>
+              <br>
             </div>
           </div>
 
@@ -228,10 +229,10 @@
             <form @submit.prevent="uploadBatch">
               <div class="field is-grouped is-justify-content-center mt-6">
                 <div class="control">
-                  <button class="button is-outlined is-primary is-wide" @click="previousStep">
+                  <button class="button is-link is-outlined is-large is-wide" @click="previousStep">
                     Back
                   </button>
-                  <button type="submit" :class="{'is-loading': loading}" class="button button is-primary is-wide mr-4">
+                  <button type="submit" :class="{'is-loading': loading}" class="button is-link is-large is-wide mr-4">
                     Post tasks
                   </button>
                 </div>
