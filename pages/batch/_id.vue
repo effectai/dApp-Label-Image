@@ -1,35 +1,5 @@
 <template>
   <div class="section">
-      <header class="navbar">
-        <div class="container">
-          <div class="navbar-brand">
-            <a class="navbar-item">
-              <span>
-                <img src="https://effect.network/img/logo/logo_icon.png" alt="logo" srcset="">
-              </span>
-              <span>Effect Network</span>
-            </a>
-            <span class="navbar-burger" data-target="navbarMenuHeroC">
-              <span />
-              <span />
-              <span />
-            </span>
-          </div>
-          <div id="navbarMenuHeroC" class="navbar-menu">
-            <div class="navbar-end">
-              <nuxt-link to="/" class="navbar-item">
-                Home
-              </nuxt-link>
-              <nuxt-link to="/create" class="navbar-item">
-                Start
-              </nuxt-link>
-              <nuxt-link to="/batch" class="navbar-item">
-                Orders
-              </nuxt-link>
-            </div>
-          </div>
-        </div>
-      </header>
     <div class="columns pt-6">
       <div class="column is-three-fifths is-offset-one-fifth">
         <h2 class="title">
@@ -45,16 +15,20 @@
             <div class="box media p-6">
               <div class="media-content">
                 <div class="content">
-                  <p class="subtitle">
+                  <p class="subtitle has-text-black">
                     <a :href="`https://app.effect.network/campaigns/${batch.campaign_id}`" target="_blank" rel="noopener noreferrer">
                       <span class="icon-text">
-                        <span>{{ campaign.info.title }}</span>
+                        <span class="is-underlined">{{ campaign.info.title }}</span>
+                        &nbsp;
+                        <span>
+                          <font-awesome-icon class="icon is-small" icon="fa-solid fa-arrow-up-right-from-square" />
+                        </span>
                       </span>
                     </a>
                   </p>
                   <hr>
 
-                  <p class="subtitle">
+                  <p class="subtitle has-text-black">
                     Details
                   </p>
                   <div class="px-6">
@@ -105,7 +79,7 @@
                   <p class="subtitle">
                     Results ({{ batch.tasks_done }}/{{ batch.num_tasks * batch.repetitions }})
                   </p>
-                  <progress class="progress is-primary" :value="batchPercentageDone" max="100">
+                  <progress v-show="submissions && submissions.length > 0" class="progress is-primary" :value="batchPercentageDone" max="100">
                     {{ batchPercentageDone }}
                   </progress>
                   <div v-if="submissions && submissions.length > 0" class="table-container px-6">
@@ -140,8 +114,8 @@
                       </tbody>
                     </table>
                   </div>
-                  <div v-else>
-                    No results yet, please wait while someone start working on your order.
+                  <div v-else class="has-text-centered">
+                    No results yet, please wait while someone starts working on your order.
                   </div>
                 </div>
               </div>
@@ -195,8 +169,11 @@
 
             <footer class="modal-card-foot">
               <!-- <button class="button is-success">Save changes</button> -->
-              <!-- <button class="button" @click.prevent="resultModal = false">Close</button> -->
-            </footer>
+                  <!-- <button class="button" @click.prevent="resultModal = false">Close</button> -->
+                  </footer>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
