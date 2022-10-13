@@ -31,27 +31,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="field is-horizontal"> -->
-                  <!-- <div class="field-label is-normal"> -->
-                    <!-- <label class="label">Number of workers</label> -->
-                  <!-- </div> -->
-                  <!-- <div class="field-body"> -->
-                    <!-- <div class="field"> -->
-                      <!-- <p class="control"> -->
-                        <!-- <input -->
-                          <!-- type="number" -->
-                          <!-- class="input is-info" -->
-                          <!-- placeholder="1" -->
-                          <!-- step="1" -->
-                          <!-- min="1" -->
-                          <!-- max="10" -->
-                          <!-- required -->
-                          <!-- @keydown.enter.prevent="createTask" -->
-                        <!-- > -->
-                      <!-- </p> -->
-                    <!-- </div> -->
-                  <!-- </div> -->
-                <!-- </div> -->
                 <div class="control">
                   <button
                     class="button is-primary is-fullwidth mx-auto"
