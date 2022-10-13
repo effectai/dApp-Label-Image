@@ -46,7 +46,7 @@
                 <br>
               </div>
               <div style="background: #fff; border-radius: 8px" class="p-2">
-                <div class="table-container">
+                <div v-if="batch && batch.length >= 1" class="table-container">
                   <table v-if="campaign && campaign.placeholders" class="table mx-auto">
                     <thead>
                       <tr>
@@ -56,7 +56,7 @@
                         <th>
                           Images
                         </th>
-                        <th></th>
+                        <th />
                         <!-- <th>Min. Labels</th> -->
                         <th />
                       </tr>
@@ -68,7 +68,7 @@
                           hello
                         </td>
                       </tr>
-                      <tr v-else v-for="(task, index) in batch" :key="task.id">
+                      <tr v-for="(task, index) in batch" v-else :key="task.id">
                         <th v-for="placeholder in campaign.placeholders" :key="placeholder">
                           <img :src="batch[index].image_url" alt="" srcset="" style="object-fit: contain; height: 100px;">
                         </th>
@@ -85,23 +85,13 @@
                           </button>
                         </td>
                       </tr>
-                      <!-- <tr> -->
-                        <!-- <th /> -->
-                        <!-- <td v-for="(placeholder, placeindex) in campaign.placeholders" :key="placeholder" class="task-placeholder-value"> -->
-                          <!-- <input -->
-                            <!-- :ref="`placeholder-${placeindex}`" -->
-                            <!-- v-model="newTask[placeholder]" -->
-                            <!-- type="url" -->
-                            <!-- pattern="https?://.+" -->
-                            <!-- class="input is-info task-placeholder-value mx-auto" -->
-                            <!-- placeholder="https://effect.network/img/logo/logo.png" -->
-                            <!-- required -->
-                            <!-- @keydown.enter.prevent="createTask" -->
-                          <!-- > -->
-                        <!-- </td> -->
-                      <!-- </tr> -->
                     </tbody>
                   </table>
+                </div>
+                <div v-else>
+                  <p class="has-text-centered">
+                    No images added yet.
+                  </p>
                 </div>
               </div>
             </div>
@@ -139,7 +129,7 @@
             <div class="field is-grouped is-justify-content-center mt-6">
               <div class="control">
                 <button type="submit" :class="{'is-loading': loading}" class="button is-link is-large is-fullwidth mr-4" :disabled="!batch.length" @click="nextStep">
-                  Next step
+                  Next
                 </button>
               </div>
             </div>
@@ -152,7 +142,7 @@
             Connect your wallet
           </h2>
           <h2 v-else class="title">
-            Submit to Effect Network
+            Finish Order
           </h2>
 
           <div v-if="accountConnected" class="box media">
@@ -165,14 +155,14 @@
 
             <div class="media-content">
               <div class="content p-3">
-                <p class="subtitle">
+                <p class="subtitle has-text-black">
                   Connected
                 </p>
                 <p>
                   <strong>{{ connectResponse.accountName }}</strong>
                 </p>
                 <hr>
-                <p class="subtitle">
+                <p class="subtitle has-text-black">
                   Order
                 </p>
 
@@ -198,6 +188,10 @@
                       <td>Total Cost</td>
                       <td><strong>{{ batchCost }}</strong> <i>{{ client.config.efxSymbol }}</i></td>
                     </tr>
+                    <tr>
+                      <td>Network Fee (10%)</td>
+                      <td><strong>{{ batchCost * 0.1 }}</strong> <i>{{ client.config.efxSymbol }}</i></td>
+                    </tr>
                   </tfoot>
                 </table>
               </div>
@@ -205,26 +199,33 @@
             </div>
           </div>
 
-          <div v-if="!accountConnected" id="connect-buttons" class="buttons px-6">
-            <button id="btn-login" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-light  px-6 mx-6" @click="login()">
-              <span class="icon">
-                <img src="@/assets/images/providers/BSC-logo.svg" alt="" srcset="">
-              </span>
-              <span>Connect with BSC</span>
-            </button>
-            <button id="btn-login-eos" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-light  px-6 mx-6" @click="loginEOS()">
-              <span class="icon">
-                <img src="@/assets/images/providers/EOS-logo.svg" alt="" srcset="">
-              </span>
-              <span>Connect with EOS</span>
-            </button>
+          <div v-if="!accountConnected" class="">
+            <div class="box buttons p-6">
+              <button id="btn-login" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-link px-6 mx-6" @click="login()">
+                <span class="icon">
+                  <img src="@/assets/images/providers/BSC-logo.svg" alt="" srcset="">
+                </span>
+                <span>Connect BSC</span>
+              </button>
+              <button id="btn-login-eos" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-link px-6 mx-6" @click="loginEOS()">
+                <span class="icon">
+                  <img src="@/assets/images/providers/EOS-logo.svg" alt="" srcset="">
+                </span>
+                <span>Connect EOS</span>
+              </button>
+            </div>
+            <div class="buttons is-centered mx-auto p-1">
+              <button class="button is-link is-outlined is-large" @click="step -= 1">
+                Back
+              </button>
+            </div>
           </div>
 
           <div v-if="accountConnected && !createdBatchId">
-            <p v-if="paymentLoading" class="notification is-warning">
-              Please be patient when posting...it can take up to a minute for transaction to complete.
+            <p v-if="paymentLoading" class="notification is-warning is-light">
+              Please be patient, this may take a few minutes.
               <br>
-              Also note that you will need to sign multiple transactions if you are using Metamask.
+              If you are using <strong class="is-underlined">Metamask</strong>, you will need to confirm multiple transactions.
             </p>
             <form @submit.prevent="uploadBatch">
               <div class="field is-grouped is-justify-content-center mt-6">
@@ -233,7 +234,11 @@
                     Back
                   </button>
                   <button type="submit" :class="{'is-loading': loading}" class="button is-link is-large is-wide mr-4">
-                    Post tasks
+                    <span>Pay</span>
+                    &nbsp;
+                    <span class="icon">
+                      <font-awesome-icon icon="fa-solid fa-coins" class="icon" />
+                    </span>
                   </button>
                 </div>
               </div>
@@ -243,13 +248,13 @@
           <div v-if="createdBatchId" class="notification is-success">
             <p class="mx-6 px-6 has-text-centered">
               <strong>Success!</strong><br>
-              Your order has been successfuly posted to
+              Your order is being processed.
               <a v-if="env === 'mainnet'" :href="`https://app.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
               <a v-else :href="`https://testnet.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
               <br>
             </p><hr>
             <div class="buttons is-centered">
-              <nuxt-link :to="`/batch/${createdBatchId}`" class="mx-6 px-6 button is-centered " target="" rel="noopener noreferrer">
+              <nuxt-link :to="`/batch/${createdBatchId}`" class="mx-6 px-6 button is-centered is-large is-link" target="" rel="noopener noreferrer">
                 Go to results
               </nuxt-link>
             </div>

@@ -5,6 +5,16 @@
         <h2 class="title">
           Orders
         </h2>
+        <nav class="breadcrumb">
+          <ul>
+            <li>
+              <nuxt-link to="/">Home</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="#" class="is-active">Orders</nuxt-link>
+            </li>
+          </ul>
+        </nav>
         <div v-if="Loading" class="loading-text">
           Loading
         </div>
@@ -17,25 +27,28 @@
                     Recent Orders <sup>*</sup>
                   </p>
                   <hr>
-                  <div class="px-6">
-                    <table class="table is-narrow">
+                  <div class="mx-6 px-6">
+                    <table class="table is-narrow is-hoverable">
                       <thead>
                         <tr>
                           <!-- <th>Transaction</th> -->
                           <th />
                           <th>Order-ID</th>
-                          <th>Status</th>
+                          <th />
+                          <!-- <th>Status</th> -->
                         </tr>
                       </thead>
                       <!-- <tfoot></tfoot> -->
                       <tbody>
-                        <tr v-for="(tx, indx) in transactions" :key="indx">
+                        <tr v-for="(tx, indx) in transactions" :key="indx" @click="goToOrder(tx.batchId)">
                           <th>{{ indx }}</th>
                           <td>
-                            {{ tx.tx.id }}
+                            <span>{{ tx.batchId }}</span>
                           </td>
                           <td>
-                            {{ tx.batchId }}
+                            <span class="icon is-medium">
+                              <font-awesome-icon icon="fa-solid fa-play" />
+                            </span>
                           </td>
                         </tr>
                       </tbody>
@@ -77,7 +90,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import * as effectsdk from '@effectai/effect-js'
 
 export default {
@@ -90,11 +103,12 @@ export default {
     }
   },
   computed: {
-    // ...mapState({
-    //   transactions: state => state.transaction.transactions.list
-    // }),
+    ...mapState({
+      transactions: state => state.transaction.transactions.list
+    }),
     ...mapGetters({
-      transactions: 'transaction/transactions'
+      allTransactions: 'transaction/allTranscations',
+      trasactionsIsEmpty: 'transaction/transactionsIsEmpty'
     })
   },
   created () {
@@ -105,6 +119,9 @@ export default {
     ...mapActions({
       removeTransaction: 'transactions/removeTransaction'
     }),
+    goToOrder (id) {
+      this.$router.push(`/batch/${id}`)
+    },
     async fetchBatch () {
       this.list = []
       for (const batch of this.transactions) {

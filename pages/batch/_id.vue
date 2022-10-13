@@ -5,13 +5,24 @@
         <h2 class="title">
           Order
         </h2>
+        <nav class="breadcrumb">
+          <ul>
+            <li>
+              <nuxt-link to="/">Home</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="/batch">Orders</nuxt-link>
+            </li>
+            <li>
+              <nuxt-link to="#" class="is-active">ID</nuxt-link>
+            </li>
+          </ul>
+        </nav>
         <div v-if="loading" class="loading-text">
           Loading
         </div>
         <div v-else>
           <div v-if="batch && campaign">
-            <br>
-            <br>
             <div class="box media p-6">
               <div class="media-content">
                 <div class="content">
@@ -40,7 +51,12 @@
                             Order-ID
                           </td>
                           <td>
-                            {{ id }}
+                            <a href="`https://app.effect.network/${id}`" target="_blank" rel="noopener noreferrer">
+                              <span class="is-underlined">{{ id }}</span>
+                              <span class="icon">
+                                <font-awesome-icon class="icon is-small" icon="fa-solid fa-arrow-up-right-from-square" />
+                              </span>
+                            </a>
                           </td>
                         </tr>
                         <tr>
@@ -48,7 +64,7 @@
                             Status
                           </td>
                           <td>
-                            {{ batchPercentageDone }}%
+                            {{ batchPercentageDone }}% (complete)
                           </td>
                         </tr>
                         <tr>
@@ -76,7 +92,7 @@
 
                   <hr>
 
-                  <p class="subtitle">
+                  <p class="subtitle has-text-black">
                     Results ({{ batch.tasks_done }}/{{ batch.num_tasks * batch.repetitions }})
                   </p>
                   <progress v-show="submissions && submissions.length > 0" class="progress is-primary" :value="batchPercentageDone" max="100">
@@ -104,10 +120,10 @@
                           <td>{{ res.submitted_on }}</td>
                           <td>
                             <button
-                              class="button"
+                              class="button is-link is-small is-rounded"
                               @click.prevent="viewResult(res.data)"
                             >
-                              View Result
+                              View
                             </button>
                           </td>
                         </tr>
@@ -169,15 +185,15 @@
 
             <footer class="modal-card-foot">
               <!-- <button class="button is-success">Save changes</button> -->
-                  <!-- <button class="button" @click.prevent="resultModal = false">Close</button> -->
-                  </footer>
-                </div>
-              </div>
-            </div>
+              <!-- <button class="button" @click.prevent="resultModal = false">Close</button> -->
+            </footer>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  </div>
+  </div>
   </div>
 </template>
 
