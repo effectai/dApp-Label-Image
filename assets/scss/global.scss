@@ -1,6 +1,10 @@
-/* Import the rest of Bulma */
-// @import '../../node_modules/bulma';
-// @import '../../node_modules/bulma-slider/dist/css/bulma-slider.min.css';
-
 @import '../../node_modules/bulma/bulma.sass';
 @import '../../node_modules/bulma-slider/dist/css/bulma-slider.min.css';
+
+.loading-text {
+    padding-right: 0.5em;
+      &:after {
+      content: '.';
+      animation: dots 1.2s steps(5, end) infinite;
+      }
+  }
