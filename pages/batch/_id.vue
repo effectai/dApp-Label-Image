@@ -1,6 +1,36 @@
 <template>
-  <div class="section pt-6">
-    <div class="columns">
+  <div class="section">
+      <header class="navbar">
+        <div class="container">
+          <div class="navbar-brand">
+            <a class="navbar-item">
+              <span>
+                <img src="https://effect.network/img/logo/logo_icon.png" alt="logo" srcset="">
+              </span>
+              <span>Effect Network</span>
+            </a>
+            <span class="navbar-burger" data-target="navbarMenuHeroC">
+              <span />
+              <span />
+              <span />
+            </span>
+          </div>
+          <div id="navbarMenuHeroC" class="navbar-menu">
+            <div class="navbar-end">
+              <nuxt-link to="/" class="navbar-item">
+                Home
+              </nuxt-link>
+              <nuxt-link to="/create" class="navbar-item">
+                Start
+              </nuxt-link>
+              <nuxt-link to="/batch" class="navbar-item">
+                Orders
+              </nuxt-link>
+            </div>
+          </div>
+        </div>
+      </header>
+    <div class="columns pt-6">
       <div class="column is-three-fifths is-offset-one-fifth">
         <h2 class="title">
           Order
@@ -28,14 +58,25 @@
                     Details
                   </p>
                   <div class="px-6">
-                    <p>
-                      <span>Order ID: <strong>{{ id }}</strong></span>
-                      <br>
-                      <span>Status: <strong>{{ batchPercentageDone }}%</strong></span>
-                    </p>
                     <table class="table is-narrow is-centered">
                       <thead />
                       <tbody>
+                        <tr>
+                          <td>
+                            Order-ID
+                          </td>
+                          <td>
+                            {{ id }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Status
+                          </td>
+                          <td>
+                            {{ batchPercentageDone }}%
+                          </td>
+                        </tr>
                         <tr>
                           <td>Tasks</td>
                           <td>{{ batch.num_tasks }}&nbsp;×</td>
@@ -64,7 +105,10 @@
                   <p class="subtitle">
                     Results ({{ batch.tasks_done }}/{{ batch.num_tasks * batch.repetitions }})
                   </p>
-                  <div v-if="submissions && submissions.length > 0" class="table-container">
+                  <progress class="progress is-primary" :value="batchPercentageDone" max="100">
+                    {{ batchPercentageDone }}
+                  </progress>
+                  <div v-if="submissions && submissions.length > 0" class="table-container px-6">
                     <table class="table">
                       <thead>
                         <tr>
@@ -75,11 +119,11 @@
                       </thead>
                       <tbody>
                         <tr
-                          v-for="(res, idx) in submissions"
+                          v-for="(res) in submissions"
                           :key="res.id"
                         >
                           <td>
-                            <a :href="batchIpfs.tasks[idx]?.image_url" target="_blank" rel="noopener noreferrer">
+                            <a :href="`https://app.effect.network/campaigns/${batch.campaign_id}/${res.batch_id}`" target="_blank" rel="noopener noreferrer">
                               {{ res.id }}
                             </a>
                           </td>
@@ -139,7 +183,7 @@
                     <tbody>
                       <tr v-for="r in dataModal" :key="r.id">
                         <td>
-                          <img :src="r.croppedCanvas" style="width: 100px" />
+                          <img :src="r.croppedCanvas" style="width: 100px">
                         </td>
                         <td>{{ r.label }}</td>
                       </tr>

@@ -9,6 +9,63 @@
           </h2>
           <div class="field">
             <div class="box">
+              <div class="mx-auto" style="max-width: 600px;">
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label is-pulled-left">Image URL:</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <input
+                          :ref="`placeholder-${placeindex}`"
+                          v-model="newTask.image_url"
+                          type="url"
+                          pattern="https?://.+"
+                          class="input is-info"
+                          placeholder="https://effect.network/img/logo/logo.png"
+                          required
+                          @keydown.enter.prevent="createTask"
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="field is-horizontal"> -->
+                  <!-- <div class="field-label is-normal"> -->
+                    <!-- <label class="label">Number of workers</label> -->
+                  <!-- </div> -->
+                  <!-- <div class="field-body"> -->
+                    <!-- <div class="field"> -->
+                      <!-- <p class="control"> -->
+                        <!-- <input -->
+                          <!-- type="number" -->
+                          <!-- class="input is-info" -->
+                          <!-- placeholder="1" -->
+                          <!-- step="1" -->
+                          <!-- min="1" -->
+                          <!-- max="10" -->
+                          <!-- required -->
+                          <!-- @keydown.enter.prevent="createTask" -->
+                        <!-- > -->
+                      <!-- </p> -->
+                    <!-- </div> -->
+                  <!-- </div> -->
+                <!-- </div> -->
+                <div class="control">
+                  <button
+                    class="button is-primary is-fullwidth mx-auto"
+                    :class="{'is-loading': loading}"
+                    @click.prevent="createTask"
+                  >
+                    <span>Add</span>
+                  &nbsp;
+                    <span><font-awesome-icon icon="fa-solid fa-plus" /></span>
+                  <!-- <span><font-awesome-icon icon="fa-solid fa-square-plus" /></span> -->
+                  </button>
+                </div>
+                <br>
+              </div>
               <div style="background: #fff; border-radius: 8px" class="p-2">
                 <div class="table-container">
                   <table v-if="campaign && campaign.placeholders" class="table mx-auto">
@@ -20,13 +77,19 @@
                         <th>
                           Images
                         </th>
-                        <th>URL</th>
-                        <th>Min. Labels</th>
+                        <th></th>
+                        <!-- <th>Min. Labels</th> -->
                         <th />
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(task, index) in batch" :key="task.id">
+                      <tr v-if="campaign.placeholders.length === 0">
+                        <th>X</th>
+                        <td>
+                          hello
+                        </td>
+                      </tr>
+                      <tr v-else v-for="(task, index) in batch" :key="task.id">
                         <th v-for="placeholder in campaign.placeholders" :key="placeholder">
                           <img :src="batch[index].image_url" alt="" srcset="" style="object-fit: contain; height: 100px;">
                         </th>
@@ -43,41 +106,30 @@
                           </button>
                         </td>
                       </tr>
-                      <tr>
-                        <th></th>
-                        <td v-for="(placeholder, placeindex) in campaign.placeholders" :key="placeholder" class="task-placeholder-value">
-                          <input
-                            :ref="`placeholder-${placeindex}`"
-                            v-model="newTask[placeholder]"
-                            type="url"
-                            pattern="https?://.+"
-                            class="input is-info task-placeholder-value mx-auto"
-                            placeholder="https://effect.network/img/logo/logo.png"
-                            required
-                            @keydown.enter.prevent="createTask"
-                          >
-                        </td>
-                      </tr>
+                      <!-- <tr> -->
+                        <!-- <th /> -->
+                        <!-- <td v-for="(placeholder, placeindex) in campaign.placeholders" :key="placeholder" class="task-placeholder-value"> -->
+                          <!-- <input -->
+                            <!-- :ref="`placeholder-${placeindex}`" -->
+                            <!-- v-model="newTask[placeholder]" -->
+                            <!-- type="url" -->
+                            <!-- pattern="https?://.+" -->
+                            <!-- class="input is-info task-placeholder-value mx-auto" -->
+                            <!-- placeholder="https://effect.network/img/logo/logo.png" -->
+                            <!-- required -->
+                            <!-- @keydown.enter.prevent="createTask" -->
+                          <!-- > -->
+                        <!-- </td> -->
+                      <!-- </tr> -->
                     </tbody>
                   </table>
                 </div>
               </div>
-              <div class="control has-text-centered m-5">
-                <button
-                  class="button is-primary is-fullwidth mx-auto"
-                  :class="{'is-loading': loading}"
-                  @click.prevent="createTask"
-                >
-                  <span>Add</span>
-                  &nbsp;
-                  <span><font-awesome-icon icon="fa-solid fa-plus" /></span>
-                  <!-- <span><font-awesome-icon icon="fa-solid fa-square-plus" /></span> -->
-                </button>
-              </div>
             </div>
             <div v-if="campaign && campaign.info" class="box has-text-centered">
-              <p>Amount of workers per image:
-                  <strong>{{ repetitions }}</strong>
+              <p>
+                Workers per image:
+                <strong>{{ repetitions }}</strong>
               </p>
               <div class="mx-auto">
                 <input
@@ -240,6 +292,7 @@ import * as effectsdk from '@effectai/effect-js'
 import Web3 from 'web3'
 import AnchorLink from 'anchor-link'
 import AnchorLinkBrowserTransport from 'anchor-link-browser-transport'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Create',
@@ -278,6 +331,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      campaign: state => state.campaign.campaign
+    }),
     batchCost () {
       return (this.batch.length * this.repetitions) * this.campaign.info.reward
     }
@@ -295,6 +351,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      addTransaction: 'transaction/addTransaction'
+    }),
     setErrorMessage (msg) {
       this.errorMessage = msg
       setTimeout(() => { this.errorMessage = null }, 5000)
@@ -349,6 +408,18 @@ export default {
         this.setErrorMessage('Please add a valid image url. ex: https://example.com/image.jpg')
         return
       }
+
+      try {
+        if (!this.newTask.image_url.includes('http') || !this.newTask.image_url.includes('https')) {
+          this.newTask.image_url = `https://${this.newTask.image_url}`
+        }
+        const url = new URL(this.newTask.image_url)
+        console.log('url', url)
+      } catch (error) {
+        this.setErrorMessage('Please add a valid image url. ex: https://example.com/image.jpg')
+        return
+      }
+
       this.batch.push(this.newTask)
       // Reset the newTask object
       this.newTask.id = this.tempCounter++
@@ -373,12 +444,16 @@ export default {
         const content = {
           tasks: this.batch.map(el => ({ image_url: el.image_url }))
         }
-        console.log('uploading batch', content)
+        // console.log('uploading batch', content)
         const result = await this.client.force
           .createBatch(this.campaign.id, content, Number(this.repetitions), this.proxy ? this.proxy : null)
-        console.log('tx result', result)
+        // console.log('tx result', result)
         this.createdBatchId = await this.client.force.getBatchId(result.id, this.campaign.id)
-        console.log('batch created with id', this.createdBatchId)
+        this.addTransaction({
+          tx: result,
+          batchId: this.createdBatchId
+        })
+        // console.log('batch created with id', this.createdBatchId)
       } catch (e) {
         this.setErrorMessage(e)
         console.error(e)

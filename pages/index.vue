@@ -19,18 +19,15 @@
           </div>
           <div id="navbarMenuHeroC" class="navbar-menu">
             <div class="navbar-end">
-              <a class="navbar-item">
+              <nuxt-link to="/" class="navbar-item">
                 Home
-              </a>
-              <a class="navbar-item">
+              </nuxt-link>
+              <nuxt-link to="/create" class="navbar-item">
                 Start
-              </a>
-              <a class="navbar-item">
+              </nuxt-link>
+              <nuxt-link to="/batch" class="navbar-item">
                 Orders
-              </a>
-              <a class="navbar-item">
-                About
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </div>
