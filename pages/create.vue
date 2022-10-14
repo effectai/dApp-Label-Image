@@ -170,11 +170,11 @@
                   <thead />
                   <tbody>
                     <tr>
-                      <td>Tasks</td>
+                      <td>Images</td>
                       <td>{{ batch.length }}&nbsp;×</td>
                     </tr>
                     <tr>
-                      <td>Amount</td>
+                      <td>Workers</td>
                       <td>{{ repetitions }}&nbsp;×</td>
                     </tr>
                     <tr>
