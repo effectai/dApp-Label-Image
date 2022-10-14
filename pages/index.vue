@@ -9,12 +9,12 @@
         </figure>
         <br>
         <p class="title">
-          Image Labeler
+          SnapShot Labeler
         </p>
         <hr>
         <section class="section">
           <p class="subtitle">
-            Use the Effect Network Work-Force in order to add labels to your Images.
+            Use the Effect Network Work-Force to upgrade your NFT's and Images.
           </p>
           <div class="columns">
             <div class="column box m-2 p-2">
@@ -23,7 +23,7 @@
               </div>
               <hr>
               <p>
-                Add links to your Images/NFT's
+                Add links to your NFT's or Images
               </p>
             </div>
             <div class="column box m-2 p-2">
@@ -48,7 +48,7 @@
               </div>
               <hr>
               <p>
-                The Work-Force will upgrade your Images/NFT's
+                The Work-Force will upgrade your Images or NFT's
               </p>
             </div>
             <div class="column box m-2 p-2">
@@ -57,7 +57,7 @@
               </div>
               <hr>
               <p>
-                Download your Upgraded Images/NFT's
+                Download upgraded metadata.
               </p>
             </div>
           </div>
@@ -67,8 +67,8 @@
           <p class="subtitle">
             Get started now!
           </p>
-          <div class="buttons is-centered">
-            <nuxt-link to="/create" class="button is-fullwidth is-primary is-light is-large mx-6">
+          <div class="buttons is-centered mx-auto" style="max-width: 500px;">
+            <nuxt-link to="/create" class="button is-fullwidth is-primary is-light is-large mx-6 py-1">
               <span>
                 Start
               </span>
@@ -76,7 +76,7 @@
                 <font-awesome-icon icon="fa-solid fa-play" />
               </span>
             </nuxt-link>
-            <nuxt-link to="/batch" class="button is-fullwidth is-primary is-light is-large mx-6">
+            <nuxt-link to="/batch" class="button is-fullwidth is-primary is-light is-large mx-6 py-1">
               <span>
                 Orders
               </span>

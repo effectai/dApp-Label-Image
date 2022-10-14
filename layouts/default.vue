@@ -10,11 +10,11 @@
               </span>
               <span>Effect Network</span>
             </nuxt-link>
-            <span class="navbar-burger" data-target="navbarMenuHeroC">
-              <span />
-              <span />
-              <span />
-            </span>
+            <!-- <span class="navbar-burger" data-target="navbarMenuHeroC"> -->
+              <!-- <span></span> -->
+              <!-- <span></span> -->
+              <!-- <span></span> -->
+            <!-- </span> -->
           </div>
           <div id="navbarMenuHeroC" class="navbar-menu">
             <div class="navbar-end">

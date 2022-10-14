@@ -46,9 +46,11 @@
                             <span>{{ tx.batchId }}</span>
                           </td>
                           <td>
-                            <span class="icon is-medium">
-                              <font-awesome-icon icon="fa-solid fa-play" />
-                            </span>
+                            <button class="button is-info is-small is-rounded">
+                              <span class="icon is-medium">
+                                <font-awesome-icon icon="fa-solid fa-play" />
+                              </span>
+                            </button>
                           </td>
                         </tr>
                       </tbody>
@@ -69,10 +71,10 @@
                     Place an order to see it here.
                   </p>
                   <div class="buttons is-centered p-2">
-                    <nuxt-link to="/" class="button is-link is-medium">
+                    <nuxt-link to="/" class="button is-info is-medium">
                       Home
                     </nuxt-link>
-                    <nuxt-link to="/create" class="button is-link is-medium">
+                    <nuxt-link to="/create" class="button is-info is-medium">
                       Start
                     </nuxt-link>
                   </div>

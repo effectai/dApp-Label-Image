@@ -33,7 +33,7 @@
                 </div>
                 <div class="control">
                   <button
-                    class="button is-primary is-fullwidth mx-auto"
+                    class="button is-info is-fullwidth mx-auto"
                     :class="{'is-loading': loading}"
                     @click.prevent="createTask"
                   >
@@ -103,7 +103,7 @@
               <div class="mx-auto">
                 <input
                   v-model="repetitions"
-                  class="slider is-fullwidth is-large is-primary"
+                  class="slider is-fullwidth is-large is-info"
                   step="1"
                   min="1"
                   max="20"
@@ -128,7 +128,7 @@
           <form>
             <div class="field is-grouped is-justify-content-center mt-6">
               <div class="control">
-                <button type="submit" :class="{'is-loading': loading}" class="button is-link is-large is-fullwidth mr-4" :disabled="!batch.length" @click="nextStep">
+                <button type="submit" :class="{'is-loading': loading}" class="button is-info is-large is-fullwidth mr-4" :disabled="!batch.length" @click="nextStep">
                   Next
                 </button>
               </div>
@@ -201,13 +201,13 @@
 
           <div v-if="!accountConnected" class="">
             <div class="box buttons p-6">
-              <button id="btn-login" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-link px-6 mx-6" @click="login()">
+              <button id="btn-login" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-info px-6 mx-6" @click="login()">
                 <span class="icon">
                   <img src="@/assets/images/providers/BSC-logo.svg" alt="" srcset="">
                 </span>
                 <span>Connect BSC</span>
               </button>
-              <button id="btn-login-eos" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-link px-6 mx-6" @click="loginEOS()">
+              <button id="btn-login-eos" :class="{'is-loading': loading}" class="button is-large is-fullwidth is-info px-6 mx-6" @click="loginEOS()">
                 <span class="icon">
                   <img src="@/assets/images/providers/EOS-logo.svg" alt="" srcset="">
                 </span>
@@ -215,7 +215,7 @@
               </button>
             </div>
             <div class="buttons is-centered mx-auto p-1">
-              <button class="button is-link is-outlined is-large" @click="step -= 1">
+              <button class="button is-info is-outlined is-large" @click="step -= 1">
                 Back
               </button>
             </div>
@@ -230,10 +230,10 @@
             <form @submit.prevent="uploadBatch">
               <div class="field is-grouped is-justify-content-center mt-6">
                 <div class="control">
-                  <button class="button is-link is-outlined is-large is-wide" @click="previousStep">
+                  <button class="button is-info is-outlined is-large is-wide" @click="previousStep">
                     Back
                   </button>
-                  <button type="submit" :class="{'is-loading': loading}" class="button is-link is-large is-wide mr-4">
+                  <button type="submit" :class="{'is-loading': loading}" class="button is-info is-large is-wide mr-4">
                     <span>Pay</span>
                     &nbsp;
                     <span class="icon">
@@ -254,7 +254,7 @@
               <br>
             </p><hr>
             <div class="buttons is-centered">
-              <nuxt-link :to="`/batch/${createdBatchId}`" class="mx-6 px-6 button is-centered is-large is-link" target="" rel="noopener noreferrer">
+              <nuxt-link :to="`/batch/${createdBatchId}`" class="mx-6 px-6 button is-centered is-large is-info" target="" rel="noopener noreferrer">
                 Go to results
               </nuxt-link>
             </div>
@@ -434,9 +434,14 @@ export default {
           .createBatch(this.campaign.id, content, Number(this.repetitions), this.proxy ? this.proxy : null)
         // console.log('tx result', result)
         this.createdBatchId = await this.client.force.getBatchId(result.id, this.campaign.id)
+        const batch = await this.client.force.getBatchById(this.createdBatchId)
+        const batchIpfs = await this.effectsdk.force.getIpfsContent(batch.content.field_1)
         this.addTransaction({
           tx: result,
-          batchId: this.createdBatchId
+          batchId: this.createdBatchId,
+          batch,
+          batchIpfs,
+          campaign: this.campaign
         })
         // console.log('batch created with id', this.createdBatchId)
       } catch (e) {

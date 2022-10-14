@@ -95,7 +95,7 @@
                   <p class="subtitle has-text-black">
                     Results ({{ batch.tasks_done }}/{{ batch.num_tasks * batch.repetitions }})
                   </p>
-                  <progress v-show="submissions && submissions.length > 0" class="progress is-primary" :value="batchPercentageDone" max="100">
+                  <progress v-show="submissions && submissions.length > 0" class="progress is-info" :value="batchPercentageDone" max="100">
                     {{ batchPercentageDone }}
                   </progress>
                   <div v-if="submissions && submissions.length > 0" class="table-container px-6">
@@ -120,10 +120,12 @@
                           <td>{{ res.submitted_on }}</td>
                           <td>
                             <button
-                              class="button is-link is-small is-rounded"
+                              class="button is-info is-small is-rounded"
                               @click.prevent="viewResult(res.data)"
                             >
-                              View
+                              <span class="">
+                                <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="icon is-small" />
+                              </span>
                             </button>
                           </td>
                         </tr>
