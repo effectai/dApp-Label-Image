@@ -95,8 +95,8 @@
                   <p class="subtitle has-text-black">
                     Results ({{ batch.tasks_done }}/{{ batch.num_tasks * batch.repetitions }})
                   </p>
-                  <progress v-show="submissions && submissions.length > 0" class="progress is-info" :value="batchPercentageDone" max="100">
-                    {{ batchPercentageDone }}
+                  <progress v-show="submissions && submissions.length > 0" class="progress is-medium is-info" :value="batchPercentageDone" max="100">
+                    {{ batchPercentageDone }}%
                   </progress>
                   <div v-if="submissions && submissions.length > 0" class="table-container px-6">
                     <table class="table">
@@ -234,7 +234,7 @@ export default {
     this.getResults()
     this.timer = setInterval(() => {
       this.getResults()
-    }, 30e3)
+    }, 10e3)
   },
   beforeDestroy () {
     clearInterval(this.timer)

@@ -34,6 +34,7 @@
                           <!-- <th>Transaction</th> -->
                           <th />
                           <th>Order-ID</th>
+                          <th>Date</th>
                           <th />
                           <!-- <th>Status</th> -->
                         </tr>
@@ -43,7 +44,11 @@
                         <tr v-for="(tx, indx) in transactions" :key="indx" @click="goToOrder(tx.batchId)">
                           <th>{{ indx }}</th>
                           <td>
-                            <span>{{ tx.batchId }}</span>
+                            {{ tx.batchId }}
+                          </td>
+                          <td>
+                            <!-- WTF -->
+                            {{ JSON.parse(JSON.stringify(tx)).tx.transaction.processed.block_time }}
                           </td>
                           <td>
                             <button class="button is-info is-small is-rounded">

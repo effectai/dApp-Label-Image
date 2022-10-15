@@ -274,7 +274,7 @@
 <script>
 // Import Effect-JS
 import * as effectsdk from '@effectai/effect-js'
-import Web3 from 'web3'
+// import Web3 from 'web3'
 import AnchorLink from 'anchor-link'
 import AnchorLinkBrowserTransport from 'anchor-link-browser-transport'
 import { mapState, mapActions } from 'vuex'
@@ -432,17 +432,34 @@ export default {
         // console.log('uploading batch', content)
         const result = await this.client.force
           .createBatch(this.campaign.id, content, Number(this.repetitions), this.proxy ? this.proxy : null)
-        // console.log('tx result', result)
+        console.log('tx result', result)
         this.createdBatchId = await this.client.force.getBatchId(result.id, this.campaign.id)
-        const batch = await this.client.force.getBatchById(this.createdBatchId)
-        const batchIpfs = await this.effectsdk.force.getIpfsContent(batch.content.field_1)
+        // console.log('createdBatchId', this.createdBatchId)
+        // const batch = await this.client.force.getBatchById(this.createdBatchId)
+        // console.log('batch', batch)
+        // const batchIpfs = await this.effectsdk.force.getIpfsContent(batch.content.field_1)
+        // console.log('batchIpfs', batchIpfs)
+
+        const fetchTxData = async (batchId) => {
+          const batch = await this.client.force.getBatchById(batchId)
+          if (batch === null || batch === undefined) {
+            setTimeout(() => fetchTxData(batchId), 1000)
+          } else {
+            const batchIpfs = await this.effectsdk.force.getIpfsContent(batch.content.field_1)
+            return {
+              batch,
+              batchIpfs
+            }
+          }
+        }
+        const txData = await fetchTxData(this.createdBatchId)
         this.addTransaction({
           tx: result,
           batchId: this.createdBatchId,
-          batch,
-          batchIpfs,
-          campaign: this.campaign
+          campaign: this.campaign,
+          ...txData
         })
+
         // console.log('batch created with id', this.createdBatchId)
       } catch (e) {
         this.setErrorMessage(e)
@@ -546,7 +563,7 @@ export default {
             params: [{ chainId: '0x38' }] // 0x38 is the chainId of bsc testnet.
           })
           // @ts-ignore
-          this.connectAccount.provider = new Web3(window.ethereum)
+          // this.connectAccount.provider = new Web3(window.ethereum)
           this.connectAccount.account = null
           this.connectAccount.providerName = 'metamask'
         } catch (error) {
