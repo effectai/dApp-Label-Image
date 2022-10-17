@@ -72,15 +72,9 @@
                   <p class="subtitle has-text-black has-text-centered">
                     No orders found.
                   </p>
-                  <p class="has-text-centered">
-                    Place an order to see it here.
-                  </p>
                   <div class="buttons is-centered p-2">
                     <nuxt-link to="/" class="button is-info is-medium">
                       Home
-                    </nuxt-link>
-                    <nuxt-link to="/create" class="button is-info is-medium">
-                      Start
                     </nuxt-link>
                   </div>
                 </div>
@@ -89,7 +83,7 @@
           </div>
         </div>
         <p v-show="transactions" class="is-size-7">
-          * Note that when the localstorage is cleared all transactions will be cleared as well.
+          <sup>*</sup> Note that when the localstorage is cleared all orders will be cleared as well.
         </p>
       </div>
     </div>

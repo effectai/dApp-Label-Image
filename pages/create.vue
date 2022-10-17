@@ -222,7 +222,7 @@
           </div>
 
           <div v-if="accountConnected && !createdBatchId">
-            <p v-if="paymentLoading" class="notification is-warning is-light">
+            <p v-if="paymentLoading" class="notification is-warning is-light has-text-centered">
               Please be patient, this may take a few minutes.
               <br>
               If you are using <strong class="is-underlined">Metamask</strong>, you will need to confirm multiple transactions.
@@ -230,7 +230,7 @@
             <form @submit.prevent="uploadBatch">
               <div class="field is-grouped is-justify-content-center mt-6">
                 <div class="control">
-                  <button class="button is-info is-outlined is-large is-wide" @click="previousStep">
+                  <button :class="{'is-loading': loading}" class="button is-info is-outlined is-large is-wide" @click="previousStep">
                     Back
                   </button>
                   <button type="submit" :class="{'is-loading': loading}" class="button is-info is-large is-wide mr-4">
