@@ -1,6 +1,6 @@
 # Effect-Network-dApp
 
-An easy to use dApp starter template for the Effect Network
+An easy-to-use dApp starter template for the Effect Network
 
 ## Build Setup
 
@@ -19,5 +19,8 @@ $ npm run start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+For a detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
+# Node Version
+
+You need to use Node version 16.0.0 or higher

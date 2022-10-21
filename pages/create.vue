@@ -274,7 +274,7 @@
 <script>
 // Import Effect-JS
 import * as effectsdk from '@effectai/effect-js'
-// import Web3 from 'web3'
+import Web3 from 'web3'
 import AnchorLink from 'anchor-link'
 import AnchorLinkBrowserTransport from 'anchor-link-browser-transport'
 import { mapState, mapActions } from 'vuex'
@@ -563,7 +563,7 @@ export default {
             params: [{ chainId: '0x38' }] // 0x38 is the chainId of bsc testnet.
           })
           // @ts-ignore
-          // this.connectAccount.provider = new Web3(window.ethereum)
+          this.connectAccount.provider = new Web3(window.ethereum)
           this.connectAccount.account = null
           this.connectAccount.providerName = 'metamask'
         } catch (error) {

@@ -9,6 +9,10 @@ export default {
   privateRuntimeConfig: {
   },
 
+  server: {
+    port: 8383
+  },
+
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
