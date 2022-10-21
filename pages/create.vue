@@ -249,8 +249,7 @@
             <p class="mx-6 px-6 has-text-centered">
               <strong>Success!</strong><br>
               Your order is being processed.
-              <a v-if="env === 'mainnet'" :href="`https://app.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
-              <a v-else :href="`https://testnet.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
+              <a :href="`https://app.effect.network/campaigns/${campaign.id}/${createdBatchId}`" target="_blank" rel="noopener noreferrer">Effect Force</a>
               <br>
             </p><hr>
             <div class="buttons is-centered">
@@ -555,8 +554,7 @@ export default {
         try {
           console.log('Connecting to metamask wallet.')
           // @ts-ignore
-          // eslint-disable-next-line no-unused-vars
-          const ethAccount = await window.ethereum.request({ method: 'eth_requestAccounts' })
+          await window.ethereum.request({ method: 'eth_requestAccounts' })
           // @ts-ignore
           await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
