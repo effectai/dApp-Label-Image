@@ -51,7 +51,7 @@
                             Order-ID
                           </td>
                           <td>
-                            <a :href="`https://app.effect.network/${id}`" target="_blank" rel="noopener noreferrer">
+                            <a :href="`https://app.effect.network/campaigns/${batch.campaign_id}/${id}`" target="_blank" rel="noopener noreferrer">
                               <span class="is-underlined">{{ id }}</span>
                               <span class="icon">
                                 <font-awesome-icon class="icon is-small" icon="fa-solid fa-arrow-up-right-from-square" />
