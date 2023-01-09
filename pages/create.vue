@@ -181,16 +181,20 @@
                       <td>Cost per Task</td>
                       <td><strong>{{ campaign.info.reward }}</strong> <i>{{ client.config.efxSymbol }}</i></td>
                     </tr>
-                  </tbody>
-
-                  <tfoot>
                     <tr>
-                      <td>Total Cost</td>
+                      <td>Cost For All Tasks</td>
                       <td><strong>{{ batchCost }}</strong> <i>{{ client.config.efxSymbol }}</i></td>
                     </tr>
                     <tr>
                       <td>Network Fee (10%)</td>
                       <td><strong>{{ batchCost * 0.1 }}</strong> <i>{{ client.config.efxSymbol }}</i></td>
+                    </tr>
+                  </tbody>
+
+                  <tfoot>
+                    <tr>
+                      <td>Total Cost</td>
+                      <td><strong>{{ batchCost * 0.1 + batchCost}}</strong> <i>{{ client.config.efxSymbol }}</i></td>
                     </tr>
                   </tfoot>
                 </table>
